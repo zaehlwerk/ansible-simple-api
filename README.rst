@@ -5,6 +5,7 @@ Ansible Simple API
 This is very simple wrapper around Ansible's API with sensible defaults.
 
 Here is an example:
+
 >>> from ansible_simple_api import Ansible
 >>> ansible = Ansible(connection='local', inventory='localhost,')
 >>> ansible.run('localhost', 'debug', msg="Hello Ansible Simple API")
