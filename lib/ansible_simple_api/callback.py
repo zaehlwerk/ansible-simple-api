@@ -31,34 +31,22 @@ class ResultCallback(CallbackBase):
         super(ResultCallback, self).__init__()
         self.results = {}
 
-    def v2_runner_on_failed(self, result, ignore_errors=False):
+    def default_action(self, result):
         try:
-            host_results = self.results[result._host]
+            host_results = self.results[result._host.name]
         except KeyError:
             host_results = []
-            self.results[result._host] = host_results
+            self.results[result._host.name] = host_results
         host_results.append((result.task_name, result._result))
+
+    def v2_runner_on_failed(self, result, ignore_errors=False):
+        self.default_action(result)
 
     def v2_runner_on_ok(self, result, **kwargs):
-        try:
-            host_results = self.results[result._host]
-        except KeyError:
-            host_results = []
-            self.results[result._host] = host_results
-        host_results.append((result.task_name, result._result))
+        self.default_action(result)
 
     def v2_runner_on_skipped(self, result):
-        try:
-            host_results = self.results[result._host]
-        except KeyError:
-            host_results = []
-            self.results[result._host] = host_results
-        host_results.append((result.task_name, result._result))
+        self.default_action(result)
 
     def v2_runner_on_unreachable(self, result):
-        try:
-            host_results = self.results[result._host]
-        except KeyError:
-            host_results = []
-            self.results[result._host] = host_results
-        host_results.append((result.task_name, result._result))
+        self.default_action(result)
