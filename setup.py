@@ -109,7 +109,7 @@ setup(
     # have to be included in MANIFEST.in as well.
     package_data={},
 
-    setup_requires=['pytest-runner'],
+    setup_requires=[],
     tests_require=['pytest',
                    'pytest-cov',
                    'pytest-flakes',
