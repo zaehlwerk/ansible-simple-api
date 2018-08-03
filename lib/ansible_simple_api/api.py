@@ -51,7 +51,8 @@ class Ansible:
     """
 
     def __init__(self, connection=C.DEFAULT_TRANSPORT,
-                 inventory=C.DEFAULT_HOST_LIST, forks=10):
+                 inventory=C.DEFAULT_HOST_LIST,
+                 basedir=None, forks=10):
         self.connection = connection
         self.module_path = []
         self.forks = forks
@@ -62,10 +63,15 @@ class Ansible:
         self.diff = False
 
         self.loader = DataLoader()
+        if basedir:
+            self.loader.set_basedir(basedir)
+
         self.inventory = InventoryManager(loader=self.loader,
                                           sources=inventory)
         self.variable_manager = VariableManager(
             loader=self.loader, inventory=self.inventory)
+        if basedir:
+            self.variable_manager.safe_basedir = True
 
         result_callback = ResultCallback()
         tqm = TaskQueueManager(
