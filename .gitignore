@@ -1,2 +1,4 @@
 lib/ansible_simple_api.egg-info
 dist
+build
+.eggs
