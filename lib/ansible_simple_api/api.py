@@ -52,7 +52,8 @@ class Ansible:
 
     def __init__(self, connection=C.DEFAULT_TRANSPORT,
                  inventory=C.DEFAULT_HOST_LIST,
-                 basedir=None, forks=10):
+                 basedir=None, forks=10,
+                 stdout_callback=C.DEFAULT_STDOUT_CALLBACK):
         self.connection = connection
         self.module_path = []
         self.forks = forks
@@ -73,14 +74,18 @@ class Ansible:
         if basedir:
             self.variable_manager.safe_basedir = True
 
-        result_callback = ResultCallback()
+        if stdout_callback is None:
+            stdout_callback = 'null'
         tqm = TaskQueueManager(
             inventory=self.inventory,
             variable_manager=self.variable_manager,
             loader=self.loader,
             options=self,
             passwords=None,
-            stdout_callback=result_callback)
+            stdout_callback=stdout_callback,
+            run_additional_callbacks=False)
+        result_callback = ResultCallback()
+        tqm._callback_plugins.append(result_callback)
 
         @atexit.register
         def cleanup_tqm():
