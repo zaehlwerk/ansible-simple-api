@@ -118,7 +118,7 @@ class Ansible:
                 dict(action=dict(
                     module=module,
                     args=_arg if _arg else kwargs))], serial=serial)
-        return dict((host, host_results[-1][1])
+        return dict((host, host_results[-1])
                     for host, host_results in results.items())
 
     def run_role(self, hosts: str, role: str, serial=None, **kwargs):
