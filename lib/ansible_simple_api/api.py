@@ -53,8 +53,10 @@ class Ansible:
     def __init__(self, connection=C.DEFAULT_TRANSPORT,
                  inventory=C.DEFAULT_HOST_LIST,
                  basedir=None, forks=10,
-                 stdout_callback=C.DEFAULT_STDOUT_CALLBACK):
+                 stdout_callback=C.DEFAULT_STDOUT_CALLBACK,
+                 remote_user=C.DEFAULT_REMOTE_USER):
         self.connection = connection
+        self.remote_user = remote_user
         self.module_path = []
         self.forks = forks
         self.become = None
